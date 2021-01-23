@@ -1,0 +1,46 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/home/varrocs/git/macropad/firmware/include",
+                "/home/varrocs/git/macropad/firmware/src",
+                "/home/varrocs/.platformio/packages/framework-libopencm3",
+                "/home/varrocs/.platformio/packages/framework-libopencm3/include",
+                "/home/varrocs/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/varrocs/git/macropad/firmware/include",
+                    "/home/varrocs/git/macropad/firmware/src",
+                    "/home/varrocs/.platformio/packages/framework-libopencm3",
+                    "/home/varrocs/.platformio/packages/framework-libopencm3/include",
+                    "/home/varrocs/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=50004",
+                "STM32F1",
+                "STM32F103xB",
+                "ARDUINO_BLUEPILL_F103C8",
+                "F_CPU=72000000L",
+                ""
+            ],
+            "compilerPath": "/home/varrocs/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gcc",
+            "compilerArgs": [
+                "-mthumb",
+                "-mcpu=cortex-m3",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
