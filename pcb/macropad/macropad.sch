@@ -1,0 +1,351 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L YAAJ_BluePill_Part_Like:YAAJ_BluePill_Part_Like U1
+U 1 1 5FFDFAB8
+P 7450 3550
+F 0 "U1" H 7450 4715 50  0000 C CNN
+F 1 "YAAJ_BluePill_Part_Like" H 7450 4624 50  0000 C CNN
+F 2 "Footprints:YAAJ_BluePill_1" H 8150 2550 50  0001 C CNN
+F 3 "" H 8150 2550 50  0001 C CNN
+	1    7450 3550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW1
+U 1 1 5FFE1E5C
+P 2500 2600
+F 0 "SW1" H 2500 2885 50  0000 C CNN
+F 1 "SW_Push" H 2500 2794 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 2500 2800 50  0001 C CNN
+F 3 "~" H 2500 2800 50  0001 C CNN
+	1    2500 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 2100 2300 2100
+$Comp
+L pspice:DIODE D1
+U 1 1 600102BA
+P 2500 2950
+F 0 "D1" H 2500 2685 50  0000 C CNN
+F 1 "DIODE" H 2500 2776 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 2500 2950 50  0001 C CNN
+F 3 "~" H 2500 2950 50  0001 C CNN
+	1    2500 2950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2700 2600 2700 2950
+$Comp
+L Switch:SW_Push SW4
+U 1 1 600163B3
+P 3300 2600
+F 0 "SW4" H 3300 2885 50  0000 C CNN
+F 1 "SW_Push" H 3300 2794 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 3300 2800 50  0001 C CNN
+F 3 "~" H 3300 2800 50  0001 C CNN
+	1    3300 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L pspice:DIODE D4
+U 1 1 600163B9
+P 3300 2950
+F 0 "D4" H 3300 2685 50  0000 C CNN
+F 1 "DIODE" H 3300 2776 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 3300 2950 50  0001 C CNN
+F 3 "~" H 3300 2950 50  0001 C CNN
+	1    3300 2950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3500 2600 3500 2950
+$Comp
+L Switch:SW_Push SW7
+U 1 1 600184A6
+P 4050 2600
+F 0 "SW7" H 4050 2885 50  0000 C CNN
+F 1 "SW_Push" H 4050 2794 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 4050 2800 50  0001 C CNN
+F 3 "~" H 4050 2800 50  0001 C CNN
+	1    4050 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L pspice:DIODE D7
+U 1 1 600184AC
+P 4050 2950
+F 0 "D7" H 4050 2685 50  0000 C CNN
+F 1 "DIODE" H 4050 2776 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 4050 2950 50  0001 C CNN
+F 3 "~" H 4050 2950 50  0001 C CNN
+	1    4050 2950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4250 2600 4250 2950
+Wire Wire Line
+	2300 2100 2300 2600
+Connection ~ 2300 2100
+Wire Wire Line
+	2300 2100 3100 2100
+Wire Wire Line
+	3100 2100 3100 2600
+Connection ~ 3100 2100
+Wire Wire Line
+	3100 2100 3850 2100
+Wire Wire Line
+	3850 2600 3850 2100
+$Comp
+L Switch:SW_Push SW2
+U 1 1 6002B1E1
+P 2500 3700
+F 0 "SW2" H 2500 3985 50  0000 C CNN
+F 1 "SW_Push" H 2500 3894 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 2500 3900 50  0001 C CNN
+F 3 "~" H 2500 3900 50  0001 C CNN
+	1    2500 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 3200 2300 3200
+$Comp
+L pspice:DIODE D2
+U 1 1 6002B1E8
+P 2500 4050
+F 0 "D2" H 2500 3785 50  0000 C CNN
+F 1 "DIODE" H 2500 3876 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 2500 4050 50  0001 C CNN
+F 3 "~" H 2500 4050 50  0001 C CNN
+	1    2500 4050
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2700 3700 2700 4050
+$Comp
+L Switch:SW_Push SW5
+U 1 1 6002B1EF
+P 3300 3700
+F 0 "SW5" H 3300 3985 50  0000 C CNN
+F 1 "SW_Push" H 3300 3894 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 3300 3900 50  0001 C CNN
+F 3 "~" H 3300 3900 50  0001 C CNN
+	1    3300 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L pspice:DIODE D5
+U 1 1 6002B1F5
+P 3300 4050
+F 0 "D5" H 3300 3785 50  0000 C CNN
+F 1 "DIODE" H 3300 3876 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 3300 4050 50  0001 C CNN
+F 3 "~" H 3300 4050 50  0001 C CNN
+	1    3300 4050
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3500 3700 3500 4050
+$Comp
+L Switch:SW_Push SW8
+U 1 1 6002B1FC
+P 4050 3700
+F 0 "SW8" H 4050 3985 50  0000 C CNN
+F 1 "SW_Push" H 4050 3894 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 4050 3900 50  0001 C CNN
+F 3 "~" H 4050 3900 50  0001 C CNN
+	1    4050 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L pspice:DIODE D8
+U 1 1 6002B202
+P 4050 4050
+F 0 "D8" H 4050 3785 50  0000 C CNN
+F 1 "DIODE" H 4050 3876 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 4050 4050 50  0001 C CNN
+F 3 "~" H 4050 4050 50  0001 C CNN
+	1    4050 4050
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4250 3700 4250 4050
+Wire Wire Line
+	2300 3200 2300 3700
+Connection ~ 2300 3200
+Wire Wire Line
+	2300 3200 3100 3200
+Wire Wire Line
+	3100 3200 3100 3700
+Connection ~ 3100 3200
+Wire Wire Line
+	3100 3200 3850 3200
+Wire Wire Line
+	3850 3700 3850 3200
+Wire Wire Line
+	2000 1550 2000 2950
+Wire Wire Line
+	2000 2950 2300 2950
+Connection ~ 2000 2950
+Wire Wire Line
+	2800 1550 2800 2950
+Wire Wire Line
+	2800 2950 3100 2950
+Connection ~ 2800 2950
+Wire Wire Line
+	3600 1600 3600 2950
+Wire Wire Line
+	3600 2950 3850 2950
+Connection ~ 3600 2950
+$Comp
+L Switch:SW_Push SW3
+U 1 1 6003E27E
+P 2500 4800
+F 0 "SW3" H 2500 5085 50  0000 C CNN
+F 1 "SW_Push" H 2500 4994 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 2500 5000 50  0001 C CNN
+F 3 "~" H 2500 5000 50  0001 C CNN
+	1    2500 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 4300 2300 4300
+Wire Wire Line
+	2700 4800 2700 5150
+$Comp
+L Switch:SW_Push SW6
+U 1 1 6003E28C
+P 3300 4800
+F 0 "SW6" H 3300 5085 50  0000 C CNN
+F 1 "SW_Push" H 3300 4994 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 3300 5000 50  0001 C CNN
+F 3 "~" H 3300 5000 50  0001 C CNN
+	1    3300 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 4800 3500 5150
+$Comp
+L Switch:SW_Push SW9
+U 1 1 6003E299
+P 4050 4800
+F 0 "SW9" H 4050 5085 50  0000 C CNN
+F 1 "SW_Push" H 4050 4994 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB" H 4050 5000 50  0001 C CNN
+F 3 "~" H 4050 5000 50  0001 C CNN
+	1    4050 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4250 4800 4250 5150
+Wire Wire Line
+	2300 4300 2300 4800
+Connection ~ 2300 4300
+Wire Wire Line
+	2300 4300 3100 4300
+Wire Wire Line
+	3100 4300 3100 4800
+Connection ~ 3100 4300
+Wire Wire Line
+	3100 4300 3850 4300
+Wire Wire Line
+	3850 4800 3850 4300
+Wire Wire Line
+	2000 5150 2300 5150
+Wire Wire Line
+	2800 5150 3100 5150
+Wire Wire Line
+	3600 5150 3850 5150
+Text Label 2000 1550 0    50   ~ 0
+Col1
+Text Label 2800 1550 0    50   ~ 0
+Col2
+Text Label 3600 1600 0    50   ~ 0
+Col3
+Text Label 1650 2100 0    50   ~ 0
+Row1
+Text Label 1650 3200 0    50   ~ 0
+Row2
+Text Label 1650 4300 0    50   ~ 0
+Row3
+Text Label 6650 2650 2    50   ~ 0
+Col1
+Text Label 6650 2750 2    50   ~ 0
+Col2
+Text Label 6650 2850 2    50   ~ 0
+Col3
+Text Label 6650 3650 2    50   ~ 0
+Row1
+Text Label 6650 3750 2    50   ~ 0
+Row2
+Text Label 6650 3850 2    50   ~ 0
+Row3
+$Comp
+L pspice:DIODE D9
+U 1 1 6003E29F
+P 4050 5150
+F 0 "D9" H 4050 4885 50  0000 C CNN
+F 1 "DIODE" H 4050 4976 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 4050 5150 50  0001 C CNN
+F 3 "~" H 4050 5150 50  0001 C CNN
+	1    4050 5150
+	-1   0    0    1   
+$EndComp
+$Comp
+L pspice:DIODE D6
+U 1 1 6003E292
+P 3300 5150
+F 0 "D6" H 3300 4885 50  0000 C CNN
+F 1 "DIODE" H 3300 4976 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 3300 5150 50  0001 C CNN
+F 3 "~" H 3300 5150 50  0001 C CNN
+	1    3300 5150
+	-1   0    0    1   
+$EndComp
+$Comp
+L pspice:DIODE D3
+U 1 1 6003E285
+P 2500 5150
+F 0 "D3" H 2500 4885 50  0000 C CNN
+F 1 "DIODE" H 2500 4976 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 2500 5150 50  0001 C CNN
+F 3 "~" H 2500 5150 50  0001 C CNN
+	1    2500 5150
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2000 2950 2000 4050
+Wire Wire Line
+	2300 4050 2000 4050
+Connection ~ 2000 4050
+Wire Wire Line
+	2000 4050 2000 5150
+Wire Wire Line
+	2800 2950 2800 4050
+Wire Wire Line
+	3100 4050 2800 4050
+Connection ~ 2800 4050
+Wire Wire Line
+	2800 4050 2800 5150
+Wire Wire Line
+	3600 2950 3600 4050
+Wire Wire Line
+	3850 4050 3600 4050
+Connection ~ 3600 4050
+Wire Wire Line
+	3600 4050 3600 5150
+$EndSCHEMATC
