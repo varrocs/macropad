@@ -24,7 +24,8 @@ usbd_device *global_usb_dev=NULL;
 static microrl_t shell;
 
 
-uint8_t key_to_write = 0;
+static uint8_t key_to_write = 0;
+static uint8_t key_pressed = 0;
 
 // ----------------------------------------------------------------------- MISC
 uint16_t usb_write_key(uint8_t key);
@@ -205,7 +206,6 @@ static void cdcacm_data_rx_cb(usbd_device *usbd_dev, uint8_t ep)
 	char buf[64];
 	int len = usbd_ep_read_packet(usbd_dev, ENDP_ADDR_SRL_DATA_OUT, buf, 64);
 
-
 	if (len) {
 
 		//usbd_ep_write_packet(usbd_dev, ENDP_ADDR_SRL_DATA_IN, buf, len);
@@ -263,9 +263,19 @@ void sys_tick_handler(void) {
 	if (key_to_write != 0) {
 		int16_t written = usb_write_key(key_to_write);
 		if (written) {
+			key_pressed = key_to_write;
 			key_to_write=0;
 		}
+		return ;
 	}
+
+	if (key_pressed != 0) {
+		int16_t written = usb_write_key(0);
+		if (written) {
+			key_pressed = 0;
+		}
+	}
+
 }
 
 int main(void)
