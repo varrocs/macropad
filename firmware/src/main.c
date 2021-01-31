@@ -11,6 +11,7 @@
 #include "microrl/microrl.h"
 #include "usb_descriptors.h"
 #include "hid_descriptors.h"
+#include "output_buffer.h"
 
 #define UNUSED(x) ((void)x)
 
@@ -23,6 +24,7 @@
 usbd_device *global_usb_dev=NULL;
 static microrl_t shell;
 
+static output_buffer_t output_buffer;
 
 static uint8_t key_to_write = 0;
 static uint8_t key_pressed = 0;
@@ -66,7 +68,8 @@ uint16_t usb_write_key(uint8_t key)
 
 static void shell_print_callback (const char * str) {
 	const size_t len = strlen(str);
-	usbd_ep_write_packet(global_usb_dev, ENDP_ADDR_SRL_DATA_IN, str, len);
+	ob_add_data(&output_buffer, str, len);
+	//usbd_ep_write_packet(global_usb_dev, ENDP_ADDR_SRL_DATA_IN, str, len);
 }
 
 static int shell_execute_callback(int argc, const char* const* argv) {
@@ -260,6 +263,13 @@ static void cdcacm_set_config(usbd_device *usbd_dev, uint16_t wValue)
 
 
 void sys_tick_handler(void) {
+
+	char* str;
+	size_t len;
+	if (ob_read_data(&output_buffer, &str, &len)) {
+		usbd_ep_write_packet(global_usb_dev, ENDP_ADDR_SRL_DATA_IN, str, len);
+	}
+
 	if (key_to_write != 0) {
 		int16_t written = usb_write_key(key_to_write);
 		if (written) {
@@ -285,6 +295,7 @@ int main(void)
 	usbd_device *usbd_dev;
 
 	rcc_clock_setup_in_hse_8mhz_out_72mhz();
+	ob_init(&output_buffer);
 
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
 	/* SysTick interrupt every N clock pulses: set reload to N-1 */
@@ -307,6 +318,7 @@ int main(void)
 	for (i = 0; i < 0x800000; i++)
 		__asm__("nop");
 	gpio_clear(GPIOA, GPIO12);
+
 
 	global_usb_dev = usbd_dev;
 	microrl_init(&shell, shell_print_callback);
