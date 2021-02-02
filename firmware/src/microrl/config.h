@@ -82,7 +82,7 @@ already initialize and ready to print message */
 /*
 New line symbol */
 //#define _ENDL_LF
-#define _ENDL_CR
+#define _ENDL_CR_or_LF
 
 #if defined(_ENDL_CR)
 #define ENDL "\r"
@@ -92,6 +92,8 @@ New line symbol */
 #define ENDL "\n"
 #elif defined(_ENDL_LFCR)
 #define ENDL "\n\r"
+#elif defined(_ENDL_CR_or_LF)
+#define ENDL "\n"
 #else
 #error "You must define new line symbol."
 #endif

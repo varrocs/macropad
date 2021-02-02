@@ -593,6 +593,13 @@ void microrl_insert_char (microrl_t * pThis, int ch)
 			if (pThis->tmpch == KEY_LF)
 				new_line_handler(pThis);
 			break;
+#elif defined(_ENDL_CR_or_LF)
+			case KEY_CR:
+				new_line_handler(pThis);
+			break;
+			case KEY_LF:
+				new_line_handler(pThis);
+			break;
 #else
 			case KEY_CR:
 			break;
