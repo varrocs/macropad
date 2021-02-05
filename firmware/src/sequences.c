@@ -1,4 +1,5 @@
 #include <string.h> 
+#include <stdbool.h>
 #include "sequences.h"
 
 #define KEY_COUNT 9
@@ -19,8 +20,8 @@ static char* other_buffer() {
     }
 }
 
-void set_sequence(int key, const char* sequence) {
-	if (key >= KEY_COUNT) return;
+bool sq_set_sequence(int key, const char* sequence) {
+	if (0 > key || key >= KEY_COUNT) return false;
 	const char* source=NULL;
 	char* target = other_buffer();
 	for (int i=0; i < KEY_COUNT; ++i) {
@@ -54,7 +55,7 @@ void set_sequence(int key, const char* sequence) {
 	current_sequence_buffer = other_buffer();
 }
 
-char* get_sequence(int key) {
+char* sq_get_sequence(int key) {
 	if (key >= KEY_COUNT) return NULL;
     return keys[key];
 }

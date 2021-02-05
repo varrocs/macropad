@@ -16,6 +16,8 @@ static void shell_print_callback (const char * str) {
 
 char MSG_ERR[] = "\r\nERR\r\n";
 char MSG_OK[] = "\r\nOK\r\n";
+char MSG_WTF[] = "\r\n?\r\n";
+char MSG_NL[] = "\r\n";
 
 static void set_string_sequence(int argc, const char* const* argv) {
 	if (argc < 2) {
@@ -24,9 +26,12 @@ static void set_string_sequence(int argc, const char* const* argv) {
 	}
 
 	int key = atoi(argv[0]);
-	set_sequence(key, argv[1]);
-
-	ob_add_data(&output_buffer, MSG_OK, sizeof MSG_OK);
+	int ok = sq_set_sequence(key, argv[1]);
+	if (ok) {
+		ob_add_data(&output_buffer, MSG_OK, sizeof MSG_OK);
+	} else {
+		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
+	}
 }
 
 static void get_string_sequence(int argc, const char* const* argv) {
@@ -36,12 +41,30 @@ static void get_string_sequence(int argc, const char* const* argv) {
 	}
 
 	int key = atoi(argv[0]);
-	char * seq = get_sequence(key);
-	int len = strlen(seq);
+	char * seq = sq_get_sequence(key);
+	if (seq) {
+		int len = strlen(seq);
 
-	ob_add_data(&output_buffer, "\r\n", 2);
-	ob_add_data(&output_buffer, seq, len);
-	ob_add_data(&output_buffer, "\r\n", 2);
+		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
+		ob_add_data(&output_buffer, seq, len);
+		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
+	} else {
+		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
+	}
+}
+
+static void press_key(int argc, const char* const* argv) {
+	if (argc < 1) {
+		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
+		return;
+	}
+
+	int key = atoi(argv[0]);
+	char * seq = sq_get_sequence(key);
+	if (seq) {
+		// lakdladjk
+		ob_add_data(&output_buffer, MSG_OK, sizeof MSG_OK);
+	}
 }
 
 int shell_execute_callback(int argc, const char* const* argv) {
@@ -55,8 +78,10 @@ int shell_execute_callback(int argc, const char* const* argv) {
 		set_string_sequence(argc-1, argv+1);
 	} else if (strcmp(argv[0], "gets") == 0) {
 		get_string_sequence(argc-1, argv+1);
+	} else if (strcmp(argv[0], "press") == 0) {
+		press_key(argc-1, argv+1);
 	} else {
-		ob_add_data(&output_buffer, "\r\n?\r\n", 5);
+		ob_add_data(&output_buffer, MSG_WTF, sizeof MSG_WTF);
 	}
 	return 0;
 }
