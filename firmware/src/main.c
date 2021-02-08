@@ -9,6 +9,7 @@
 
 #include "usb_handshake.h"
 #include "shell.h"
+#include "key_press_seq.h"
 
 #define KEY_MEDIA_VOLUMEUP 0xed
 #define KEY_MEDIA_VOLUMEDOWN 0xee
@@ -19,35 +20,20 @@
 usbd_device *global_usb_dev=NULL;
 
 
-static uint8_t key_to_write = 0;
-static uint8_t key_pressed = 0;
+//static uint8_t key_to_write = 0;
+//static uint8_t key_pressed = 0;
 
 // ----------------------------------------------------------------------- MISC
-uint16_t usb_write_key(uint8_t key);
 
-void led_up(void) {
-	gpio_clear(GPIOC, GPIO13);
-   // usb_write_key(KEY_VOLUMEUP);
-	//key_to_write = KEY_MEDIA_VOLUMEUP;
-	key_to_write = KEY_VOLUMEUP;
-}
-
-void led_down(void) {
-	gpio_set(GPIOC, GPIO13);
-	//usb_write_key(KEY_VOLUMEDOWN);
-	// key_to_write = KEY_MEDIA_VOLUMEDOWN;
-	key_to_write = KEY_VOLUMEDOWN;
-}
-
-uint16_t usb_write_key(uint8_t key)
+uint16_t usb_write_key(keypress_t key)
 {
 	uint8_t addr = ENDP_ADDR_HID_IN;
 	// uint8_t addr = ENDP_ADDR_MKEYS_IN;
 	uint8_t buf[8]={
-		0, // modifiers
+		MOD_BYTE(key), // modifiers
 		0, // reserverd
 		0, // leds,
-		key,
+		SCANCODE(key),
 		0,//ps2keyboard.usb_keys[1],
 		0,//ps2keyboard.usb_keys[2],
 		0,//ps2keyboard.usb_keys[3],
@@ -67,20 +53,9 @@ void sys_tick_handler(void) {
 		usbd_ep_write_packet(global_usb_dev, ENDP_ADDR_SRL_DATA_IN, str, len);
 	}
 
-	if (key_to_write != 0) {
-		int16_t written = usb_write_key(key_to_write);
-		if (written) {
-			key_pressed = key_to_write;
-			key_to_write=0;
-		}
-		return ;
-	}
-
-	if (key_pressed != 0) {
-		int16_t written = usb_write_key(0);
-		if (written) {
-			key_pressed = 0;
-		}
+	key_msg msg = enqueue_tick();
+	if (msg.need_send) {
+		int16_t written = usb_write_key(msg.keypress);
 	}
 }
 
@@ -96,6 +71,7 @@ int main(void)
 	rcc_clock_setup_in_hse_8mhz_out_72mhz();
 
 	init_shell();
+	enqueue_init();
 
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
 	/* SysTick interrupt every N clock pulses: set reload to N-1 */

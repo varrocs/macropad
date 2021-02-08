@@ -5,6 +5,8 @@
 #include "output_buffer.h"
 #include "shell.h"
 #include "sequences.h"
+#include "leds.h"
+#include "key_press_seq.h"
 
 microrl_t shell;
 output_buffer_t output_buffer;
@@ -41,12 +43,13 @@ static void get_string_sequence(int argc, const char* const* argv) {
 	}
 
 	int key = atoi(argv[0]);
-	char * seq = sq_get_sequence(key);
+	keypress_t* seq = sq_get_sequence(key);
 	if (seq) {
-		int len = strlen(seq);
+		int len = key_sequence_len(seq);
 
 		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
-		ob_add_data(&output_buffer, seq, len);
+
+		ob_add_data(&output_buffer, seq, len); //TODO
 		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
 	} else {
 		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
@@ -60,9 +63,9 @@ static void press_key(int argc, const char* const* argv) {
 	}
 
 	int key = atoi(argv[0]);
-	char * seq = sq_get_sequence(key);
+	keypress_t * seq = sq_get_sequence(key);
 	if (seq) {
-		// lakdladjk
+		enqueue_key_presses(seq);
 		ob_add_data(&output_buffer, MSG_OK, sizeof MSG_OK);
 	}
 }
