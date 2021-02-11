@@ -1,8 +1,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
-#include "key_press.h"
-#include "key_press_seq.h"
+#include "keypress.h"
+#include "keypress_sequence.h"
 
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
@@ -30,9 +30,9 @@ void enqueue_key_presses(keypress_buffer keypresses) {
 	write_cursor += step;
 }
 
-key_msg enqueue_tick() {
+keypress_msg enqueue_tick() {
 	if (write_cursor == read_cursor) {
-		key_msg result = { .need_send=false, .keypress=0 };
+		keypress_msg result = { .need_send=false, .keypress=0 };
 		return result;
 	}
 
@@ -48,6 +48,6 @@ key_msg enqueue_tick() {
 		key_to_send = *read_cursor;
 	}
 	pressed = !pressed;
-	key_msg result = { .need_send=true, .keypress=key_to_send };
+	keypress_msg result = { .need_send=true, .keypress=key_to_send };
 	return result;
 }

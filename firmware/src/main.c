@@ -6,10 +6,10 @@
 #include <libopencm3/usb/usbd.h>
 
 #include "usb_descriptors.h"
-
 #include "usb_handshake.h"
+#include "keypress.h"
 #include "shell.h"
-#include "key_press_seq.h"
+#include "keypress_sequence.h"
 
 #define KEY_MEDIA_VOLUMEUP 0xed
 #define KEY_MEDIA_VOLUMEDOWN 0xee
@@ -53,9 +53,9 @@ void sys_tick_handler(void) {
 		usbd_ep_write_packet(global_usb_dev, ENDP_ADDR_SRL_DATA_IN, str, len);
 	}
 
-	key_msg msg = enqueue_tick();
+	keypress_msg msg = enqueue_tick();
 	if (msg.need_send) {
-		int16_t written = usb_write_key(msg.keypress);
+		uint16_t written = usb_write_key(msg.keypress);
 	}
 }
 
