@@ -38,16 +38,16 @@ keypress_msg enqueue_tick() {
 
 	keypress_t key_to_send;
 	if (pressed) {
+		pressed = false;
 		key_to_send = 0;
 		read_cursor++;
 		if (write_cursor == read_cursor) {
 			enqueue_init();
 		}
-		
 	} else {
 		key_to_send = *read_cursor;
+		pressed = true;
 	}
-	pressed = !pressed;
 	keypress_msg result = { .need_send=true, .keypress=key_to_send };
 	return result;
 }

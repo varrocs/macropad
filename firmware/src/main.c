@@ -27,13 +27,15 @@ usbd_device *global_usb_dev=NULL;
 
 uint16_t usb_write_key(keypress_t key)
 {
-	uint8_t addr = ENDP_ADDR_HID_IN;
+	const uint8_t mod_byte = MOD_BYTE(key);
+	const uint8_t scan_code = SCANCODE(key);
+	const uint8_t addr = ENDP_ADDR_HID_IN;
 	// uint8_t addr = ENDP_ADDR_MKEYS_IN;
 	uint8_t buf[8]={
-		MOD_BYTE(key), // modifiers
+		mod_byte, // modifiers
 		0, // reserverd
 		0, // leds,
-		SCANCODE(key),
+		scan_code,
 		0,//ps2keyboard.usb_keys[1],
 		0,//ps2keyboard.usb_keys[2],
 		0,//ps2keyboard.usb_keys[3],
@@ -56,6 +58,9 @@ void sys_tick_handler(void) {
 	keypress_msg msg = enqueue_tick();
 	if (msg.need_send) {
 		uint16_t written = usb_write_key(msg.keypress);
+		if (written == 0) {
+			// TODO reenqueue
+		}
 	}
 }
 
