@@ -17,10 +17,6 @@ static keypress_buffer keys[KEY_COUNT];
 
 static keypress_t* current_sequence_buffer = sequence_buffer_1;
 
-//bool is_empty_keypress_buffer(keypress_buffer* b) {
-//	return b->sequence == NULL && b->length == 0;
-//}
-
 static keypress_t* other_buffer(void) {
     if (current_sequence_buffer == sequence_buffer_1) {
         return sequence_buffer_2;
@@ -51,7 +47,7 @@ bool sq_set_sequence(int key, keypress_buffer keypresses) {
 			source = NULL;
 		} else if (i!=key && !IS_EMPTY_KEYPRESS_BUFFER(keys[i])) {
 			source = keys[i].sequence;
-		    keys[i].sequence = target;
+			keys[i].sequence = target;
 			keys[i].length = keys[i].length;
 			}
 
@@ -73,7 +69,7 @@ bool sq_set_sequence(int key, keypress_buffer keypresses) {
 }
 
 keypress_buffer sq_get_sequence(int key) {
-	if (key >= KEY_COUNT) return EMPTY_KEYPRESS_BUFFER;
+	if (key >= KEY_COUNT || key < 0) return EMPTY_KEYPRESS_BUFFER;
 	return keys[key];
 }
 

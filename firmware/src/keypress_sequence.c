@@ -30,7 +30,7 @@ void enqueue_key_presses(keypress_buffer keypresses) {
 	write_cursor += step;
 }
 
-keypress_msg enqueue_tick() {
+keypress_msg enqueue_get() {
 	if (write_cursor == read_cursor) {
 		keypress_msg result = { .need_send=false, .keypress=0 };
 		return result;
@@ -38,16 +38,26 @@ keypress_msg enqueue_tick() {
 
 	keypress_t key_to_send;
 	if (pressed) {
-		pressed = false;
 		key_to_send = 0;
+	} else {
+		key_to_send = *read_cursor;
+	}
+	keypress_msg result = { .need_send=true, .keypress=key_to_send };
+	return result;
+}
+
+void enqueue_next() {
+	if (write_cursor == read_cursor) {
+		return;
+	}
+
+	if (pressed) {
+		pressed = false;
 		read_cursor++;
 		if (write_cursor == read_cursor) {
 			enqueue_init();
 		}
 	} else {
-		key_to_send = *read_cursor;
 		pressed = true;
 	}
-	keypress_msg result = { .need_send=true, .keypress=key_to_send };
-	return result;
 }

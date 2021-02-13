@@ -25,7 +25,7 @@ usbd_device *global_usb_dev=NULL;
 
 // ----------------------------------------------------------------------- MISC
 
-uint16_t usb_write_key(keypress_t key)
+static uint16_t usb_write_key(keypress_t key)
 {
 	const uint8_t mod_byte = MOD_BYTE(key);
 	const uint8_t scan_code = SCANCODE(key);
@@ -55,11 +55,11 @@ void sys_tick_handler(void) {
 		usbd_ep_write_packet(global_usb_dev, ENDP_ADDR_SRL_DATA_IN, str, len);
 	}
 
-	keypress_msg msg = enqueue_tick();
+	keypress_msg msg = enqueue_get();
 	if (msg.need_send) {
 		uint16_t written = usb_write_key(msg.keypress);
-		if (written == 0) {
-			// TODO reenqueue
+		if (written > 0) {
+			enqueue_next();
 		}
 	}
 }

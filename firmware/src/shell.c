@@ -40,12 +40,13 @@ static int ascii_to_keypresses(const char* input_buffer, keypress_t* target_buff
 	return i;
 }
 
-static int keypresses_to_ascii(const keypress_t* input_buffer, char* target_buffer) {
+static int keypresses_to_ascii(const keypress_buffer input_buffer, char* target_buffer) {
 	int i=0;
-	for (const keypress_t* k = input_buffer; !IS_ZERO_KEYPRESS(*k); k++) {
-		uint8_t scancode = SCANCODE(*k);	
+	for (int j = 0; j < input_buffer.length; j++) {
+		const keypress_t kp = input_buffer.sequence[j];
+		const uint8_t scancode = SCANCODE(kp);	
 		if (scancode>=128) continue; // Skip it
-		char ascii = scancode_to_ascii[scancode];
+		const char ascii = scancode_to_ascii[scancode];
 		target_buffer[i++] = ascii;
 	}
 	return i;
@@ -76,10 +77,9 @@ static void get_string_sequence(int argc, const char* const* argv) {
 
 	int key = atoi(argv[0]);
 	keypress_buffer b = sq_get_sequence(key);
-	int len = keypresses_to_ascii(b.sequence, ascii_scratchpad); // TODO
+	int len = keypresses_to_ascii(b, ascii_scratchpad);
 	if (!IS_EMPTY_KEYPRESS_BUFFER(b)) {
 		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
-		//ob_add_data(&output_buffer, b.sequence, b.length);
 		ob_add_data(&output_buffer, ascii_scratchpad, len);
 		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
 	} else {
