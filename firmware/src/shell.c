@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "microrl/microrl.h"
 #include "output_buffer.h"
 #include "keypress.h"
@@ -87,6 +88,54 @@ static void get_string_sequence(int argc, const char* const* argv) {
 	}
 }
 
+static void set_keypress_sequence(int argc, const char* const* argv) {
+	if (argc < 2) {
+		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
+		return;
+	}
+
+	int key = atoi(argv[0]);
+
+	int si=0;
+	for (int i = 1; i < argc; i++) {
+		unsigned long input_scancode = strtoul(argv[i], NULL, 16);
+		keypress_scratchpad[si++] = (keypress_t)input_scancode;
+	}
+
+	keypress_buffer b = { .length = si, .sequence=keypress_scratchpad};
+	int ok = sq_set_sequence(key, b);
+	if (ok) {
+		ob_add_data(&output_buffer, MSG_OK, sizeof MSG_OK);
+	} else {
+		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
+	}
+}
+
+static void get_keypress_sequence(int argc, const char* const* argv) {
+	if (argc < 1) {
+		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
+		return;
+	}
+	const int key = atoi(argv[0]);
+	keypress_buffer b = sq_get_sequence(key);
+	int c = 0;
+	for (int i = 0; i < b.length; ++i) {
+		const int remaining = (sizeof ascii_scratchpad) - c;
+		if (remaining <= 0) {
+			break;
+		}
+		int printed = snprintf(ascii_scratchpad+c, remaining, "%x ", b.sequence[i]);
+		c += printed;
+	}
+	if (!IS_EMPTY_KEYPRESS_BUFFER(b)) {
+		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
+		ob_add_data(&output_buffer, ascii_scratchpad, c);
+		ob_add_data(&output_buffer, MSG_NL, sizeof MSG_NL);
+	} else {
+		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
+	}
+}
+
 static void press_key(int argc, const char* const* argv) {
 	if (argc < 1) {
 		ob_add_data(&output_buffer, MSG_ERR, sizeof MSG_ERR);
@@ -112,6 +161,10 @@ int shell_execute_callback(int argc, const char* const* argv) {
 		set_string_sequence(argc-1, argv+1);
 	} else if (strcmp(argv[0], "gets") == 0) {
 		get_string_sequence(argc-1, argv+1);
+	} else if (strcmp(argv[0], "set") == 0) {
+		set_keypress_sequence(argc-1, argv+1);
+	} else if (strcmp(argv[0], "get") == 0) {
+		get_keypress_sequence(argc-1, argv+1);
 	} else if (strcmp(argv[0], "press") == 0) {
 		press_key(argc-1, argv+1);
 	} else {

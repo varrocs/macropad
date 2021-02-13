@@ -19,9 +19,7 @@
 
 usbd_device *global_usb_dev=NULL;
 
-
-//static uint8_t key_to_write = 0;
-//static uint8_t key_pressed = 0;
+void sys_tick_handler(void);
 
 // ----------------------------------------------------------------------- MISC
 
@@ -46,7 +44,6 @@ static uint16_t usb_write_key(keypress_t key)
 }
 
 
-void sys_tick_handler(void);
 void sys_tick_handler(void) {
 
 	char* str;
