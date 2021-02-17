@@ -1,0 +1,4 @@
+#define ROW_COUNT 3
+#define COL_COUNT 3
+
+#define KEY_COUNT (ROW_COUNT*COL_COUNT)

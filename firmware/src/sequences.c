@@ -4,8 +4,8 @@
 #include "keypress.h"
 #include "keypress_sequence.h"
 #include "sequences.h"
+#include "layout.h"
 
-#define KEY_COUNT 9
 #define BUFFER_SIZE 256
 
 keypress_buffer EMPTY_KEYPRESS_BUFFER = { .sequence=NULL, .length=0 };

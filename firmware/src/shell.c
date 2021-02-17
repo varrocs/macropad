@@ -15,8 +15,7 @@
 microrl_t shell;
 output_buffer_t output_buffer;
 
-const char ascii_to_scan_code_table[] = {ASCII2SCANCODE_TABLE};
-const char scancode_to_ascii[] = {SCANCODE2ASCII_TABLE};
+const keypress_t ascii_to_usb_scan_code[] = {ASCII_TO_USB_SCANCODE};
 
 static void shell_print_callback (const char * str) {
 	const size_t len = strlen(str);
@@ -27,6 +26,16 @@ char MSG_ERR[] = "\r\nERR\r\n";
 char MSG_OK[] = "\r\nOK\r\n";
 char MSG_WTF[] = "\r\n?\r\n";
 char MSG_NL[] = "\r\n";
+char MSG_HELP[] = 
+	"set <key> <scancodes...>\r\n"
+	"get <key>\r\n"
+	"sets <key> <ascii...>\r\n"
+	"gets <key>\r\n"
+	"press <key>\r\n"
+	"ledup\r\n"
+	"leddown\r\n"
+	"help\r\n"
+;
 
 keypress_t keypress_scratchpad[128];
 char       ascii_scratchpad[128];
@@ -35,20 +44,31 @@ static int ascii_to_keypresses(const char* input_buffer, keypress_t* target_buff
 	int i=0;
 	for (const char* c = input_buffer; *c != '\0'; c++) {
 		if (*c>=128) continue; // Skip it
-		uint8_t scancode = ascii_to_scan_code_table[(uint8_t)*c];
-		target_buffer[i++] = scancode;
+		const keypress_t keypress = ascii_to_usb_scan_code[(uint8_t)*c];
+		target_buffer[i++] = keypress;
 	}
 	return i;
+}
+
+static int find_ascii_to_usb_scancode(keypress_t kp) {
+	const int scancode_count = sizeof(ascii_to_usb_scan_code) / sizeof(keypress_t);
+	for (int i = 0; i<scancode_count; ++i) {
+		if (ascii_to_usb_scan_code[i] == kp) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 static int keypresses_to_ascii(const keypress_buffer input_buffer, char* target_buffer) {
 	int i=0;
 	for (int j = 0; j < input_buffer.length; j++) {
 		const keypress_t kp = input_buffer.sequence[j];
-		const uint8_t scancode = SCANCODE(kp);	
-		if (scancode>=128) continue; // Skip it
-		const char ascii = scancode_to_ascii[scancode];
-		target_buffer[i++] = ascii;
+		const int ascii = find_ascii_to_usb_scancode(kp);
+		if (ascii < 0) {
+			continue;
+		}
+		target_buffer[i++] =(char)ascii;
 	}
 	return i;
 }
@@ -124,7 +144,7 @@ static void get_keypress_sequence(int argc, const char* const* argv) {
 		if (remaining <= 0) {
 			break;
 		}
-		int printed = snprintf(ascii_scratchpad+c, remaining, "%x ", b.sequence[i]);
+		int printed = snprintf(ascii_scratchpad+c, remaining, "0x%x ", b.sequence[i]);
 		c += printed;
 	}
 	if (!IS_EMPTY_KEYPRESS_BUFFER(b)) {
@@ -150,12 +170,16 @@ static void press_key(int argc, const char* const* argv) {
 	}
 }
 
+static void print_help(void) {
+	ob_add_data(&output_buffer, MSG_HELP, sizeof MSG_HELP);
+}
+
 int shell_execute_callback(int argc, const char* const* argv) {
 	if (argc == 0) return 0;
 
-	if (strcmp(argv[0], "up") == 0) {
+	if (strcmp(argv[0], "ledup") == 0) {
 		led_up();
-	} else if (strcmp(argv[0], "down") == 0) {
+	} else if (strcmp(argv[0], "leddown") == 0) {
 		led_down();
 	} else if (strcmp(argv[0], "sets") == 0) {
 		set_string_sequence(argc-1, argv+1);
@@ -167,6 +191,8 @@ int shell_execute_callback(int argc, const char* const* argv) {
 		get_keypress_sequence(argc-1, argv+1);
 	} else if (strcmp(argv[0], "press") == 0) {
 		press_key(argc-1, argv+1);
+	} else if (strcmp(argv[0], "help") == 0) {
+		print_help();
 	} else {
 		ob_add_data(&output_buffer, MSG_WTF, sizeof MSG_WTF);
 	}
