@@ -9,7 +9,7 @@
 #include "matrix.h"
 
 #define ROW_DELAY 30
-#define DEBOUNCE_COUNT 5
+#define DEBOUNCE_COUNT 3
 
 #define DEF_MASK(x) ((1 << x) - 1)
 #define MASK 	DEF_MASK(DEBOUNCE_COUNT)
@@ -57,7 +57,7 @@ static void compare_key_states(key_state_t prev_state[], debounce_result_t scan_
 	for (int i = 0; i<KEY_COUNT; ++i) {
 		key_state_t current_state = scan_result.result[i];
 		if (current_state == KEY_UNDEFINED) continue;
-		if (current_state == KEY_HIGH && prev_state[i] == KEY_LOW) {
+		if (current_state == KEY_LOW && prev_state[i] == KEY_HIGH) {
 		    press_key(i);
 		}
 		prev_state[i] = current_state;
@@ -92,7 +92,7 @@ static debounce_result_t debounce_scan(debounce_t* d, bool scan[KEY_COUNT]) {
 	return result;
 }
 
-static void scan_with_debounce(debounce_t* t) {
+static void scan_with_debounce(key_state_t prev_state[], debounce_t* t) {
 	bool scan[KEY_COUNT];
 	do_matrix_scan(scan);
 
@@ -106,6 +106,6 @@ void init_matrix_scan() {
 }
 
 void matrix_scan() {
-	scan_with_debounce(&g_debouce_state);
+	scan_with_debounce(g_keystates, &g_debouce_state);
 }
 

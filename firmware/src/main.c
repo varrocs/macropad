@@ -116,6 +116,10 @@ int main(void)
 	systick_interrupt_enable();
 	systick_counter_enable();
 
+	// to make pb3 and pb4 usable
+	rcc_periph_clock_enable(RCC_AFIO);
+	AFIO_MAPR |= AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_ON;
+
 	rcc_periph_clock_enable(RCC_GPIOC);
 	rcc_periph_clock_enable(RCC_GPIOA);
 	rcc_periph_clock_enable(RCC_GPIOB); // For the matrix scanning
@@ -129,8 +133,9 @@ int main(void)
 	// rows
 	gpio_set_mode(GPIOB, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO3 | GPIO4 | GPIO5);
 
-	// cols
-	gpio_set_mode(GPIOB, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT,  GPIO12 | GPIO13 | GPIO14);
+	// col
+	gpio_set_mode(GPIOB, GPIO_MODE_INPUT, GPIO_CNF_INPUT_PULL_UPDOWN,  GPIO12 | GPIO13 | GPIO14);
+	gpio_clear(GPIOB, GPIO12 | GPIO13 | GPIO14);
 
 	// For the matrix scanning
 	init_matrix_scan();
