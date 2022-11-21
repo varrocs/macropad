@@ -1,0 +1,22 @@
+current_layout: layout_1
+layouts:
+ - name: layout_1
+   keys:
+   - key: 0
+     ascii: "asde"
+   - key: 1
+     keypress: "<ctrl-a>"
+   - key: 2
+     ascii: "kacsafasz"
+ - name: layout_2
+   keys:
+   - key: 0
+     keypress: "<ctrl-shift-a>"
+   - key: 2
+     ascii: "eeee"
+ - name: layout_3
+   keys:
+   - key: 0
+     keypress: "<ctrl-shift-a>"
+   - key: 2
+     ascii: "eeee"
